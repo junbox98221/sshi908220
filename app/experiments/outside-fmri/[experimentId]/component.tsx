@@ -12,8 +12,8 @@ export default function ExperimentPage({
   const [words, setWords] = useState<string[]>([]);
   const [inputWord, setInputWord] = useState("");
   const [wordCount, setWordCount] = useState<number>(0);
-  const [loading, setLoading] = useState(false); 
-  const isRequestInProgress = useRef<boolean>(false); 
+  const [loading, setLoading] = useState(false);
+  const isRequestInProgress = useRef<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function ExperimentPage({
   }, [experimentId]);
 
   useEffect(() => {
-    if (wordCount >= 20) {
+    if (wordCount >= 21) {
       router.push("/experiments");
       return;
     }
@@ -39,7 +39,7 @@ export default function ExperimentPage({
   const handleAddWord = async () => {
     if (!inputWord.trim() || loading || isRequestInProgress.current) return;
 
-    isRequestInProgress.current = true; 
+    isRequestInProgress.current = true;
     setLoading(true);
 
     console.log("📢 단어 추가 요청 중...");
@@ -49,7 +49,6 @@ export default function ExperimentPage({
         experimentId,
         word: inputWord,
       });
-
 
       console.log("✅ 서버 응답: 단어 추가 성공");
       setWords((prevWords) => [...prevWords.slice(-1), inputWord]);
@@ -64,20 +63,19 @@ export default function ExperimentPage({
       }, 100);
     }
   };
-  
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (!loading && !isRequestInProgress.current) {
-      handleAddWord();
+        handleAddWord();
       }
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <p className="text-lg text-gray-700">단어 입력: {wordCount}/20</p>
+      <p className="text-lg text-gray-700">단어 입력: {wordCount}/21</p>
 
       <div className="relative w-full max-w-2xl h-48 flex flex-col items-center justify-center mt-6">
         <p className="absolute top-1/3 text-4xl font-bold text-black">

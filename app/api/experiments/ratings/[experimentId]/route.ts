@@ -14,7 +14,7 @@ export async function POST(
     if (
       !experimentId ||
       !Array.isArray(ratings) ||
-      ratings.length !== 20 ||
+      ratings.length !== 21 ||
       !ratings.every(
         (r) =>
           r.wordId &&
