@@ -28,22 +28,29 @@ export default function ExperimentDisplayComponent({
   const [hasShownInstruction, setHasShownInstruction] = useState(false);
 
   const currentExperimentId = experimentIdList[experimentIndex];
+  console.log("release:v3");
 
-  // 모든 실험 단어 fetch
   const fetchWords = useCallback(async () => {
-    const newWords: WordMap = {};
-    for (const id of experimentIdList) {
-      try {
-        const res = await axios.get(`/api/experiments/${id}`);
-        newWords[id] = [
-          res.data.seedWord,
-          ...res.data.words.map((w: { word: string }) => w.word),
-        ];
-      } catch (err) {
-        console.error(`Error fetching words for ${id}:`, err);
+    try {
+      const responses = await Promise.all(
+        experimentIdList.map((id) =>
+          axios.get(`/api/experiments/${id}`).then((res) => ({
+            id,
+            seedWord: res.data.seedWord,
+            words: res.data.words.map((w: { word: string }) => w.word),
+          }))
+        )
+      );
+
+      const newWords: WordMap = {};
+      for (const { id, seedWord, words } of responses) {
+        newWords[id] = [seedWord, ...words];
       }
+
+      setWords(newWords);
+    } catch (err) {
+      console.error("Error fetching experiment words:", err);
     }
-    setWords(newWords);
   }, [experimentIdList]);
 
   // 키 입력 이벤트
