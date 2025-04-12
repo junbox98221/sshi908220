@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
-const SLIDE_INTERVAL_MS = 2000;
+const SLIDE_INTERVAL_MS = 15000;
 const SEED_DELAY_MS = 2000;
 const INSTRUCTION_DELAY_MS = 5000;
 
